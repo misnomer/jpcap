@@ -1,7 +1,5 @@
 package jpcap;
 
-import java.io.EOFException;
-
 import jpcap.packet.Packet;
 
 /**
@@ -247,7 +245,19 @@ public class JpcapCaptor extends JpcapInstance {
 		return new JpcapSender(ID);
 	}
 
+
+    public static void loadLibrary() throws UnsatisfiedLinkError {
+        System.loadLibrary("jpcap");
+    }
+
 	static {
-		System.loadLibrary("jpcap");
+        try {
+            loadLibrary();
+        } catch (UnsatisfiedLinkError ignore) {
+            // In the absense of reasonable logging, it's probably best just to
+            // eat this silently. Users will receive an error upon their first
+            // call to any native method.  That should be a good enough
+            // warning.
+        }
 	}
 }
