@@ -21,12 +21,28 @@
 			<available file="${NSIS}" property="IsNSISExeAvailable"/>
 		</and>
 	</condition>
-	
-	<target name="compile">
+
+    <target name="clean">
+        <delete dir="bin" includes="**/**"/>
+        <delete dir="lib" includes="jpcap.jar"/>
+        <exec dir="src/c" executable="make">
+            <arg line="clean"/>
+        </exec>
+    </target>
+
+	<target name="compile" description="Compile source">
         <javac
         	srcdir="src/java"
       		destdir="bin"
        />
+    </target>
+
+    <target name="compile.sample" depends="compile" description="Compile samples">
+        <javac srcdir="sample" destdir="bin">
+            <classpath>
+                <path location="bin"/>
+            </classpath>
+        </javac>
     </target>
 	
     <target name="jar" depends="compile">

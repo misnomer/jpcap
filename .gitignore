@@ -1,3 +1,4 @@
 bin/*
 *.so
 lib/jpcap.jar
+*.iml
