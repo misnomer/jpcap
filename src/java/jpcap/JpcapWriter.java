@@ -33,7 +33,11 @@ public class JpcapWriter
          */
 	public native void writePacket(Packet packet);
 	
-  static{
-    System.loadLibrary("jpcap");
-  }
+    static {
+        try {
+            JpcapCaptor.loadLibrary();
+        } catch (UnsatisfiedLinkError ignore) {
+            // see notes below the above call for why we eat this.
+        }
+    }
 }
