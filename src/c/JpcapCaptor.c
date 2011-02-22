@@ -890,10 +890,12 @@ void get_packet(struct pcap_pkthdr header,u_char *data,jobject *packet,int id){
   hlen=(u_short)(data-orig_data);
   //printf("set data: clen=%d, hlen=%d,total=%d/%d\n",clen,hlen,header.len,header.caplen);
 
-  dataArray=(*env)->NewByteArray(env,hlen);
-  (*env)->SetByteArrayRegion(env,dataArray,0,hlen,orig_data);
-  (*env)->CallVoidMethod(env,*packet,setPacketHeaderMID,dataArray);
-  DeleteLocalRef(dataArray);
+  if (hlen >= 0) {
+    dataArray=(*env)->NewByteArray(env,hlen);
+    (*env)->SetByteArrayRegion(env,dataArray,0,hlen,orig_data);
+    (*env)->CallVoidMethod(env,*packet,setPacketHeaderMID,dataArray);
+    DeleteLocalRef(dataArray);
+  }
 
   if(clen>=0){
     dataArray=(*env)->NewByteArray(env,(jsize)clen);
