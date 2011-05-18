@@ -44,8 +44,10 @@ JNIEXPORT void JNICALL
 Java_jpcap_JpcapWriter_close(JNIEnv *env,jobject obj){
 	if(pdt!=NULL){
 		pcap_dump_close(pdt);
-		free(pcdd);
-		pcdd=NULL;
+        // the captor must handle closing itself in order to correctly clean up
+        // the reserveID
+		//free(pcdd);
+		//pcdd=NULL;
 	}
 	pdt=NULL;
 }
